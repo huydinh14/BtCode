@@ -64,31 +64,39 @@ void linkedListAddAfterMust(LinkedListDou&, Node*, int&);
 //Xóa 1 nút với mã
 void linkedListDelHead(LinkedListDou&);
 void linkedListDelTail(LinkedListDou&);
-void linkedListDelBefore(LinkedListDou&, Node*);
-void linkedListDelAfter(LinkedListDou&, Node*);
+void linkedListDelNodeMust(LinkedListDou&, Node*);
+void linkedListDelNode(LinkedListDou&, int);
 
 //7. Giải phóng nút.
 void linkedListDouFree(LinkedListDou&);
 
 int main()
 {
+	int x, q;
 	LinkedListDou l;
 	linkedListDouInput(l);
 	cout << "Danh sach sau khi nhap:" << endl;
 	linkedListDouOutputAfter(l);
 	//linkedListDouOutputBefore(l);
+	//cout << "Nhap gia tri Node can xoa:";
+	//cin >> x;
 
-	int x, q;
 	//Xoa dau - xoa cuoi- xoa vi tri bat ky
 	//linkedListDelHead(l);
 	//linkedListDelTail(l);
-	//linkedListDelBefore(l,InsertNode(q));
+	linkedListDelNodeMust(l,InsertNode(q));
+	cout << "Danh sach sau khi xoa nhieu node bang node q: ";
 	//linkedListDelAfter(l,InsertNode(q));
+	//cout << "Danh sach sau khi xoa (sau): ";
+	//linkedListDelNode(l,x);
+	//cout << "Danh sach sau khi xoa mot node bang node q: ";
+
 	//Sap xep Bubblesort
 	//linkedListDouBubble(l);
+
 	//Them truoc - them sau
 	//linkedListAddBefore(l,InsertNode(q),x);
-	linkedListAddAfter(l, InsertNode(q), x);
+	//linkedListAddAfter(l, InsertNode(q), x);
 	//linkedListAddBeforeMust(l,InsertNode(q), x);
 	//linkedListAddAfterMust(l,InsertNode(q),x);
 
@@ -119,7 +127,7 @@ Node* linkedListDouCreateNode(int IData)
 }
 Node* InsertNode(int& q)
 {
-	cout << "Nhap du lieu node can them:";
+	cout << "Nhap du lieu node can thuc hien:";
 	cin >> q;
 	Node* PNode = linkedListDouCreateNode(q);
 	return PNode;
@@ -203,48 +211,60 @@ void linkedListDouBubble(LinkedListDou ld)
 		}
 	}
 }
-//Thêm vào trước
+
+//THEM
+//1.Thêm vào trước 1 node
 void linkedListAddBefore(LinkedListDou& l, Node* q, int& x)
 {
 	cout << "Nhap du lieu node them(truoc):";
 	cin >> x;
-	Node* p = l.PtrHead->PtrNext;
-	if (l.PtrHead->IData == q->IData)
+	if ((l.PtrHead->IData == q->IData) || (!l.PtrHead->PtrNext))
 	{
 		Node* pTemp = linkedListDouCreateNode(x);
 		linkedListDouAddHead(l, pTemp);
 		return;
 	}
-	while (p->IData != q->IData)
+	Node* p = l.PtrHead->PtrNext;
+	while (p)
 	{
-		p = p->PtrNext;
+		if (p->IData == q->IData)
+		{
+			Node* PtrNode = linkedListDouCreateNode(x);
+			PtrNode->PtrNext = p;
+			PtrNode->PtrRev = p->PtrRev;
+			p->PtrRev->PtrNext = PtrNode;
+			p->PtrRev = PtrNode;
+		}
+			p = p->PtrNext;
 	}
-	Node* PtrNode = linkedListDouCreateNode(x);
-	PtrNode->PtrNext = p;
-	PtrNode->PtrRev = p->PtrRev;
-	p->PtrRev->PtrNext = PtrNode;
-	p->PtrRev = PtrNode;
+	
 }
+//2.Thêm vào sau 1 node
 void linkedListAddAfter(LinkedListDou& l, Node* q, int& x)
 {
-	cout << "Nhap du lieu node them(truoc):";
+	cout << "Nhap du lieu node them(sau):";
 	cin >> x;
-	Node* p = l.PtrHead->PtrNext;
-	while (p->IData != q->IData)
+	Node* p = l.PtrHead;
+	while (p != l.PtrTail)
 	{
+		if (p->IData == q->IData)
+		{
+			Node* PtrNode = linkedListDouCreateNode(x);
+			PtrNode->PtrRev = p;
+			PtrNode->PtrNext = p->PtrNext;
+			p->PtrNext->PtrRev = PtrNode;
+			p->PtrNext = PtrNode;
+		}
 		p = p->PtrNext;
 	}
-	Node* PtrNode = linkedListDouCreateNode(x);
-	PtrNode->PtrRev = p;
-	PtrNode->PtrNext = p->PtrNext;
-	p->PtrNext = PtrNode;
-	p->PtrNext->PtrRev = PtrNode;
+	
 	if (l.PtrTail->IData == q->IData)
 	{
 		Node* Temp = linkedListDouCreateNode(x);
 		linkedListDouAddTail(l, Temp);
 	}
 }
+//3.Them nhieu vao truoc 1 node 
 void linkedListAddBeforeMust(LinkedListDou& l, Node* q, int& x)
 {
 	cout << "Nhap du lieu node them(truoc):";
@@ -268,81 +288,149 @@ void linkedListAddBeforeMust(LinkedListDou& l, Node* q, int& x)
 		linkedListDouAddHead(l, PtrNode);
 	}
 }
-//Thêm vào sau
+//4.Them nhieu vào sau 1 node
 void linkedListAddAfterMust(LinkedListDou& l, Node* q, int& x)
 {
 	cout << "Nhap du lieu node them(sau):";
 	cin >> x;
 	Node* p = l.PtrHead;
-	while (p)
+	while (p != l.PtrTail)
 	{
 		if (p->IData == q->IData)
 		{
 			Node* PtrNode = linkedListDouCreateNode(x);
 			PtrNode->PtrRev = p;
 			PtrNode->PtrNext = p->PtrNext;
-			p->PtrNext = PtrNode;
 			p->PtrNext->PtrRev = PtrNode;
+			p->PtrNext = PtrNode;
 		}
 		p = p->PtrNext;
 	}
-	if (l.PtrHead->IData == q->IData)
+	if (l.PtrTail->IData == q->IData)
 	{
 		Node* PtrNode = linkedListDouCreateNode(x);
 		linkedListDouAddTail(l, PtrNode);
 	}
 }
-//Xóa 1 nút 
-//Xoa dau
+//XOA NODE
+//1.Xoa dau
 void linkedListDelHead(LinkedListDou& l)
 {
-	if (l.PtrHead && l.PtrHead->PtrNext)
+	if (!l.PtrHead)
 	{
-		l.PtrHead = l.PtrHead->PtrNext;
+		return;
 	}
-	return;
+	l.PtrHead = l.PtrHead->PtrNext;
+	l.PtrHead->PtrRev = nullptr;
 }
-//Xoa cuoi
+//2.Xoa cuoi
 void linkedListDelTail(LinkedListDou& l)
 {
-	Node* PNode = l.PtrHead;
-	while (PNode->PtrNext->PtrNext)
+	if (!l.PtrHead)
 	{
-		PNode = PNode->PtrNext;
+		return;
 	}
-	PNode->PtrNext = nullptr;
+	l.PtrTail = l.PtrTail->PtrRev;
+	l.PtrTail->PtrNext = nullptr;
 }
-//Xoa node
-void linkedListDelBefore(LinkedListDou& l, Node* q)
+//3.Xoa 1 node == node q
+//void linkedListDelNode(LinkedListDou& l, Node* q)
+//{
+//	if (l.PtrHead->IData == q->IData)
+//	{
+//		linkedListDelHead(l);
+//		return;
+//	}
+//	if (l.PtrTail->IData == q->IData)
+//	{
+//		linkedListDelTail(l);
+//		return;
+//	}
+//	Node* p = l.PtrHead;
+//	while (p->PtrNext != q)
+//	{
+//		p = p->PtrNext;
+//	}
+//	Node* Temp = p->PtrNext;
+//	p->PtrNext = Temp->PtrNext;
+//	Temp->PtrNext->PtrRev = p;
+//	delete Temp;
+//}
+void linkedListDelNode(LinkedListDou& l, int x)
 {
-	Node* p = l.PtrHead;
-	while (p)
+	//do
+	//{
+		if (l.PtrHead->IData == x)
+		{
+			linkedListDelHead(l);
+			return;
+		}
+		if (l.PtrTail->IData == x)
+		{
+			linkedListDelTail(l);
+			return;
+		}
+	//} while ((l.PtrHead->IData == x) || (l.PtrTail->IData == x));
+	Node* p = l.PtrHead->PtrNext;
+	while (p->IData != x)
+	{
+		p = p->PtrNext;
+	}
+	Node* Temp = p;
+	p = p->PtrRev;
+	p->PtrNext = Temp->PtrNext;
+	Temp->PtrNext->PtrRev = p;
+	delete Temp;
+	if (l.PtrHead->IData == x)
+		{
+			linkedListDelHead(l);
+			return;
+		}
+		if (l.PtrTail->IData == x)
+		{
+			linkedListDelTail(l);
+			return;
+		}
+}
+//4.Xoa nhieu node == node q;
+void linkedListDelNodeMust(LinkedListDou& l, Node* q)
+{
+	Node* p = l.PtrHead->PtrNext;
+	while (p != l.PtrTail)
 	{
 		if (p->IData == q->IData)
 		{
-			Node* Temp = p->PtrRev;
-			Temp->PtrRev->PtrNext = p;
-			p->PtrRev = Temp->PtrRev;
-			delete Temp;
+			Node* Temp1 = p->PtrRev;
+			Node* Temp2 = p->PtrNext;
+			Temp1->PtrNext = Temp2;
+			Temp2->PtrRev = Temp1;
+			delete p;
+			p = Temp1;
 		}
 		p = p->PtrNext;
 	}
-}
-void linkedListDelAfter(LinkedListDou& l, Node* q)
-{
-	Node* p = l.PtrHead;
-	while (p)
+	if (l.PtrHead->IData == q->IData)
 	{
-		if (p->IData == q->IData)
-		{
-			Node* Temp = p->PtrNext;
-			p->PtrNext = Temp->PtrNext;
-			Temp->PtrNext->PtrRev = p;
-			delete Temp;
-		}
-		p = p->PtrNext;
+		linkedListDelHead(l);
+	}
+	if (l.PtrTail->IData == q->IData)
+	{
+		linkedListDelTail(l);
 	}
 }
+////4.Xoa sau 1 node
+//void linkedListDelAfter(LinkedListDou& l, Node* q)
+//{
+//	Node* p = l.PtrHead;
+//	while (p)
+//	{
+//		if (p->IData == q->IData)
+//		{
+//			Node* Temp = p->PtrNext;
+//		}
+//		p = p->PtrNext;
+//	}
+//}
 void linkedListDouFree(LinkedListDou& ld)
 {
 	Node* PtrNode;

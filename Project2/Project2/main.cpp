@@ -32,23 +32,23 @@ int main()
 	InputArray(Array, n);
 	cout << "Danh sach sau khi nhap la:";
 	OutputArray(Array, n);
-	cout << endl << "Danh sach cac so am trong mang:";
+	/*cout << endl << "176.Danh sach cac so am trong mang:";
 	ListedNegative(Array, n);
-	cout << "\nDanh sach cac gia tri thuoc doan " << "[" << x << ";" << y << "]: ";
-	ListedXY(Array, n, x, y);
-	cout << "\nDanh sach cac gia tri chan thuoc doan " << "[" << x << ";" << y << "]: ";
-	ListedEven(Array, n, x, y);
-	cout << "\nDanh sach cac gia tri lon hon tri tuyet doi cua cac gia tri dung sau no: ";
-	ListedNumberBigAbsAfter(Array, n);
-	cout << "\nDanh sach cac gia tri nho hon tri tuyet doi cua cac gia tri dung sau no \nva lon hon tri tuyet doi cua cac gia tri dung truoc no: ";
-	ListedNumberSmallAbsAfter_And_Opposite(Array, n);
-	cout << "\nDanh sach cac gia tri chan ma ke ben no cung la chan: ";
+	cout << "\n177.Danh sach cac gia tri thuoc doan " << "[" << x << ";" << y << "]: ";
+	ListedXY(Array, n, x, y);*/
+	//cout << "\n178.Danh sach cac gia tri chan thuoc doan " << "[" << x << ";" << y << "]: ";
+	//ListedEven(Array, n, x, y);
+	//cout << "\n179.Danh sach cac gia tri lon hon tri tuyet doi cua cac gia tri dung sau no: ";
+	//ListedNumberBigAbsAfter(Array, n);
+	//cout << "\n180.Danh sach cac gia tri nho hon tri tuyet doi cua cac gia tri dung sau no \nva lon hon tri tuyet doi cua cac gia tri dung truoc no: ";
+	//ListedNumberSmallAbsAfter_And_Opposite(Array, n);
+	cout << "\n181.Danh sach cac gia tri chan ma ke ben no cung la chan: ";
 	ListedEvenNextEven(Array, n);
-	cout << "\nDanh sach cac gia tri co lan can tri dau: ";
+	cout << "\n182.Danh sach cac gia tri co lan can tri dau: ";
 	ListedNextToOppositeSign(Array, n);
-	cout << "\nVi tri ma gia tri tai do la GTLN: ";
+	cout << "\n183.Vi tri ma gia tri tai do la GTLN: ";
 	ListedIndexValueMax(Array, n);
-	cout << "\nVi tri ma gia tri tai do la So nguyen to: ";
+	cout << "\n184.Vi tri ma gia tri tai do la So nguyen to: ";
 	ListedIndexPrime(Array, n);
 	cout << endl;
 	system("pause");
@@ -157,7 +157,7 @@ void ListedEvenNextEven(int* A, int n)
 	int iTemp = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if ((!(A[i] % 2)) && ((!(A[i + 1] % 2)) || (!(A[i - 1] % 2))))
+		if ((!(A[i] % 2)) && ((!(A[i + 1] % 2) > 0) || (!(A[i - 1] % 2) > 0)))
 		{
 			iTemp = 1;
 			cout << A[i] << " ";
